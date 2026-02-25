@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (currentSort === 'oldest') {
             edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
         } else {
-            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio); // Per defecte: Més nous a dalt
+            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio); // Per defecte
         }
 
         // 2. Renderitzat dels anys
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('category-filter').dispatchEvent(new Event('change'));
     });
 
-    // Funcionalitat de Navegació
+    // Navegació del Reproductor
     window.openPlayer = function(joc) {
         homeScreen.classList.remove('active');
         homeScreen.classList.add('hidden');
@@ -151,9 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.getElementById('play-pause-btn').innerHTML = svgPlay;
         
-        // Reiniciar visualment la barra
+        // Reiniciar barra visualment al obrir
         document.getElementById('progress-slider').value = 0;
-        document.getElementById('progress-slider').style.background = '#3a3a3c';
+        document.getElementById('progress-slider').style.background = 'rgba(255, 255, 255, 0.3)';
     };
 
     document.getElementById('back-btn').addEventListener('click', () => {
@@ -198,25 +198,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // iOS iPhone Compatible Fullscreen
+    // iOS iPhone Fullscreen
     fullscreenBtn.addEventListener('click', () => {
         if (videoEl.requestFullscreen) {
             videoEl.requestFullscreen();
         } else if (videoEl.webkitRequestFullscreen) {
             videoEl.webkitRequestFullscreen();
         } else if (videoEl.webkitEnterFullscreen) {
-            videoEl.webkitEnterFullscreen(); // iOS Màgia
+            videoEl.webkitEnterFullscreen();
         }
     });
 
-    // Control Slider de Temps
+    // Barra de temps amb degradat dinàmic
     videoEl.addEventListener('timeupdate', () => {
         if(videoEl.duration) {
             const percentage = (videoEl.currentTime / videoEl.duration) * 100;
             progressSlider.value = percentage;
             
-            // Pinta la barra de Taronja a mesura que avança
-            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${percentage}%, #3a3a3c ${percentage}%)`;
+            // Fons Taronja a l'esquerra, transparent/fosc a la dreta
+            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${percentage}%, rgba(255, 255, 255, 0.3) ${percentage}%)`;
         }
         timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
         if(currentVideoId) localStorage.setItem(`time_${currentVideoId}`, videoEl.currentTime);
@@ -226,11 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if(videoEl.duration) {
             const val = e.target.value;
             videoEl.currentTime = (val / 100) * videoEl.duration;
-            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${val}%, #3a3a3c ${val}%)`;
+            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${val}%, rgba(255, 255, 255, 0.3) ${val}%)`;
         }
     });
 
-    // Funcions de Dades (Historial i Likes)
+    // Dades i LocalStorage
     window.toggleLike = function(id, btnElement) {
         const key = `like_${id}`;
         const current = localStorage.getItem(key) === 'true';
