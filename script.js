@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let allData = [];
     let currentVideoId = null;
-    let currentSort = 'default'; // 'default', 'az', 'za'
 
-    // Icones SVG per al botó Play/Pause
     const svgPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     const svgPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
 
@@ -29,18 +27,36 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        dataToRender.forEach(edicio => {
-            // Clonant l'array per no alterar l'original a l'hora d'ordenar
+        const currentSort = document.getElementById('sort-filter').value;
+
+        // 1. Ordenació per anys/edicions
+        let edicionsArray = [...dataToRender];
+        if (currentSort === 'newest') {
+            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        } else if (currentSort === 'oldest') {
+            edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
+        } else {
+            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio); // Per defecte: Més nous a dalt
+        }
+
+        // 2. Renderitzat dels anys
+        edicionsArray.forEach(edicio => {
             let jocsArray = [...edicio.guanyadors];
 
-            // Aplicar ordenació si cal
-            if(currentSort === 'az') {
+            // 3. Ordenació per títol o estat a dins de cada any
+            if (currentSort === 'az') {
                 jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
             } else if (currentSort === 'za') {
                 jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
+            } else if (currentSort === 'unseen') {
+                jocsArray.sort((a, b) => {
+                    const vistA = (parseFloat(localStorage.getItem(`time_${a.id}`)) || 0) > 5 ? 1 : 0;
+                    const vistB = (parseFloat(localStorage.getItem(`time_${b.id}`)) || 0) > 5 ? 1 : 0;
+                    return vistA - vistB;
+                });
             }
 
-            if(jocsArray.length === 0) return; // Si després de filtrar no hi ha jocs en aquest any, saltem
+            if(jocsArray.length === 0) return;
 
             const section = document.createElement('div');
             section.className = 'year-section';
@@ -63,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 card.innerHTML = `
                     <div class="card-badges">
-                        ${isSeen ? '<span class="badge-seen">👁</span>' : ''}
+                        ${isSeen ? '<span class="badge-seen">👁 Vist</span>' : ''}
                     </div>
                     <div class="card-heart ${isLiked ? 'liked' : ''}" onclick="toggleLike('${joc.id}', this)">
                         ${isLiked ? '♥' : '♡'}
@@ -80,18 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
             contentList.appendChild(section);
         });
     }
-
-    // Ordenació
-    document.getElementById('sort-btn').addEventListener('click', (e) => {
-        if (currentSort === 'default' || currentSort === 'za') {
-            currentSort = 'az';
-            e.target.innerText = 'Ordre: A-Z';
-        } else {
-            currentSort = 'za';
-            e.target.innerText = 'Ordre: Z-A';
-        }
-        document.getElementById('category-filter').dispatchEvent(new Event('change')); // Força a re-renderitzar respectant el filtre actual
-    });
 
     // Filtres
     document.getElementById('category-filter').addEventListener('change', (e) => {
@@ -111,7 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Reproductor
+    document.getElementById('sort-filter').addEventListener('change', () => {
+        document.getElementById('category-filter').dispatchEvent(new Event('change'));
+    });
+
+    // Funcionalitat de Navegació
     window.openPlayer = function(joc) {
         homeScreen.classList.remove('active');
         homeScreen.classList.add('hidden');
@@ -124,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('player-category').innerText = joc.categoria;
         videoEl.src = joc.video_url;
 
-        // Mostrar 'Vist' al reproductor
         const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
         const seenBadge = document.getElementById('player-seen-badge');
         if (timePlayed > 5) {
@@ -142,8 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if(timePlayed) videoEl.currentTime = timePlayed;
         addToHistory(joc);
         
-        // Reinicia icona play
         document.getElementById('play-pause-btn').innerHTML = svgPlay;
+        
+        // Reiniciar visualment la barra
+        document.getElementById('progress-slider').value = 0;
+        document.getElementById('progress-slider').style.background = '#3a3a3c';
     };
 
     document.getElementById('back-btn').addEventListener('click', () => {
@@ -152,11 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
         playerScreen.classList.add('hidden');
         homeScreen.classList.remove('hidden');
         homeScreen.classList.add('active');
-        document.getElementById('category-filter').dispatchEvent(new Event('change')); // Refresca Home
+        document.getElementById('category-filter').dispatchEvent(new Event('change')); 
         renderHistory();
     });
 
-    // Controls Repro
+    // Controls Reproductor
     const playBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
@@ -174,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Control Volum Lliscant
     volumeSlider.addEventListener('input', (e) => {
         videoEl.volume = e.target.value;
         videoEl.muted = (videoEl.volume === 0);
@@ -189,20 +198,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Pantalla Completa
+    // iOS iPhone Compatible Fullscreen
     fullscreenBtn.addEventListener('click', () => {
         if (videoEl.requestFullscreen) {
             videoEl.requestFullscreen();
-        } else if (videoEl.webkitRequestFullscreen) { /* Safari */
+        } else if (videoEl.webkitRequestFullscreen) {
             videoEl.webkitRequestFullscreen();
+        } else if (videoEl.webkitEnterFullscreen) {
+            videoEl.webkitEnterFullscreen(); // iOS Màgia
         }
     });
 
-    // Control Progrés Lliscant
+    // Control Slider de Temps
     videoEl.addEventListener('timeupdate', () => {
         if(videoEl.duration) {
-            // Actualitzem l'slider nativament
-            progressSlider.value = (videoEl.currentTime / videoEl.duration) * 100;
+            const percentage = (videoEl.currentTime / videoEl.duration) * 100;
+            progressSlider.value = percentage;
+            
+            // Pinta la barra de Taronja a mesura que avança
+            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${percentage}%, #3a3a3c ${percentage}%)`;
         }
         timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
         if(currentVideoId) localStorage.setItem(`time_${currentVideoId}`, videoEl.currentTime);
@@ -210,11 +224,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     progressSlider.addEventListener('input', (e) => {
         if(videoEl.duration) {
-            videoEl.currentTime = (e.target.value / 100) * videoEl.duration;
+            const val = e.target.value;
+            videoEl.currentTime = (val / 100) * videoEl.duration;
+            progressSlider.style.background = `linear-gradient(to right, #ff4500 ${val}%, #3a3a3c ${val}%)`;
         }
     });
 
-    // Funcions extra
+    // Funcions de Dades (Historial i Likes)
     window.toggleLike = function(id, btnElement) {
         const key = `like_${id}`;
         const current = localStorage.getItem(key) === 'true';
@@ -239,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         history.forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
-            div.innerHTML = `<img src="${item.miniatura}"><br><span>${item.titol}</span>`;
+            div.innerHTML = `<img src="${item.miniatura}"><span>${item.titol}</span>`;
             div.onclick = () => { 
                 let foundGame = null;
                 allData.forEach(y => y.guanyadors.forEach(g => { if(g.id === item.id) foundGame = g; }));

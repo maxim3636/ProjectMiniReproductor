@@ -20,9 +20,18 @@
                 <option value="Best Game Direction">Best Game Direction</option>
                 <option value="Best RPG">Best RPG</option>
                 <option value="Best Art Direction">Best Art Direction</option>
+                <option value="Best Action/Adventure">Best Action/Adventure</option>
                 <option value="favorites">❤ Els meus favorits</option>
             </select>
-            <button id="sort-btn" title="Canviar ordre">A-Z</button>
+            
+            <select id="sort-filter">
+                <option value="default">Ordre per defecte</option>
+                <option value="newest">Més recents (2024+)</option>
+                <option value="oldest">Més antics (2023+)</option>
+                <option value="az">Títol: A-Z</option>
+                <option value="za">Títol: Z-A</option>
+                <option value="unseen">No vistos primer</option>
+            </select>
         </div>
 
         <div id="content-list" class="content-list"></div>
@@ -34,7 +43,7 @@
     </section>
 
     <section id="player-screen" class="screen hidden">
-        <button id="back-btn" class="nav-btn">← Tornar</button>
+        <button id="back-btn" class="nav-btn">← Tornar a la llista</button>
         
         <div class="video-container">
             <video id="main-video" playsinline>
@@ -42,14 +51,15 @@
             </video>
             
             <div class="custom-controls">
-                <input type="range" id="progress-slider" class="styled-slider" min="0" max="100" value="0">
+                <div class="progress-row">
+                    <span id="time-display">0:00 / 0:00</span>
+                    <input type="range" id="progress-slider" class="styled-slider" min="0" max="100" value="0">
+                </div>
                 
                 <div class="controls-row">
                     <button id="play-pause-btn" class="icon-btn">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                     </button>
-                    
-                    <span id="time-display">00:00 / 00:00</span>
                     
                     <div class="vol-control">
                         <button id="mute-btn" class="icon-btn">

@@ -8,37 +8,31 @@
         "titol": "Astro Bot",
         "categoria": "Game of the Year",
         "descripcio": "Una celebració de la història dels videojocs de plataformes.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=Astro+Bot",
+        "miniatura": "assets/miniatura/astro.jpg",
         "video_url": "assets/video/astro.mp4",
-        "durada_segons": 120
+        "durada_segons": 120,
+        "data_llançament": "2024-09-06"
       },
       {
         "id": "ff7_24",
         "titol": "Final Fantasy VII Rebirth",
         "categoria": "Best RPG",
         "descripcio": "La continuació del viatge més enllà de Midgar amb una gran direcció.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=FFVII+Rebirth",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=FFVII+Rebirth",
         "video_url": "assets/video/ff7.mp4",
-        "durada_segons": 180
+        "durada_segons": 180,
+        "data_llançament": "2024-02-29"
       },
       {
         "id": "metaphor24",
         "titol": "Metaphor: ReFantazio",
         "categoria": "Best Art Direction",
         "descripcio": "Una direcció artística inigualable en un món de fantasia únic.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=Metaphor",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Metaphor",
         "video_url": "assets/video/metaphor.mp4",
-        "durada_segons": 150
-      },
-      {
-                "id": "gta6",
-                "titol": "Grand Theft Auto VI",
-                "categoria": "Most Anticipated",
-                "descripcio": "Torna a Vice City en l'aventura de món obert més ambiciosa.",
-                "miniatura": "assets/miniatura/gta6.jpg",
-                "video_url": "assets/video/gta6.mp4",
-                "durada_segons": 90
-            }
+        "durada_segons": 150,
+        "data_llançament": "2024-10-11"
+      }
     ]
   },
   {
@@ -50,27 +44,30 @@
         "titol": "Baldur's Gate 3",
         "categoria": "Game of the Year",
         "descripcio": "L'èpica aventura de rol que ha redefinit el gènere.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=Baldurs+Gate+3",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Baldurs+Gate+3",
         "video_url": "assets/video/bg3.mp4",
-        "durada_segons": 140
+        "durada_segons": 140,
+        "data_llançament": "2023-08-03"
       },
       {
         "id": "aw2_23",
         "titol": "Alan Wake 2",
         "categoria": "Best Game Direction",
         "descripcio": "Misteri, terror i una narrativa visual espectacular.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=Alan+Wake+2",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Alan+Wake+2",
         "video_url": "assets/video/aw2.mp4",
-        "durada_segons": 160
+        "durada_segons": 160,
+        "data_llançament": "2023-10-27"
       },
       {
         "id": "zelda23",
         "titol": "Zelda: Tears of the Kingdom",
         "categoria": "Best Action/Adventure",
         "descripcio": "Exploració sense límits als cels i les profunditats de Hyrule.",
-        "miniatura": "https://via.placeholder.com/600x340/111111/FF4500?text=Zelda+TotK",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Zelda+TotK",
         "video_url": "assets/video/zelda.mp4",
-        "durada_segons": 170
+        "durada_segons": 170,
+        "data_llançament": "2023-05-12"
       }
     ]
   }
