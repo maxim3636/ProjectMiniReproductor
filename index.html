@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TGA: The Nominees</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section id="home-screen" class="screen active">
+        <header class="app-header">
+            <div class="logo">TGA <span>Nominees</span></div>
+        </header>
+
+        <div class="controls-bar">
+            <select id="category-filter">
+                <option value="all">Totes les categories</option>
+                <option value="Game of the Year">Game of the Year</option>
+                <option value="Most Anticipated">Most Anticipated</option>
+                <option value="Best RPG">Best RPG</option>
+                <option value="favorites">❤ Els meus favorits</option>
+            </select>
+            <button id="sort-btn" title="Canviar ordre">⇅</button>
+        </div>
+
+        <div id="content-list" class="content-list">
+        </div>
+
+        <div class="history-section">
+            <h3><span class="icon">↺</span> Recents</h3>
+            <div id="history-list" class="history-scroll">
+            </div>
+        </div>
+    </section>
+
+    <section id="player-screen" class="screen hidden">
+        <button id="back-btn" class="nav-btn">← Tornar</button>
+
+        <div class="video-container">
+            <video id="main-video" playsinline>
+                <source src="" type="video/mp4">
+                El teu navegador no suporta vídeo HTML5.
+            </video>
+
+            <div class="custom-controls">
+                <div class="progress-bar-bg" id="progress-container">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <div class="controls-row">
+                    <button id="play-pause-btn">▶</button>
+                    <span id="time-display">00:00 / 00:00</span>
+                    <button id="mute-btn">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-info">
+            <div class="info-header">
+                <h1 id="player-title">Títol del Joc</h1>
+                <button id="player-like-btn" class="like-btn">♡</button>
+            </div>
+            <p id="player-category" class="category-tag">Categoria</p>
+            <p id="player-desc">Descripció del joc...</p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

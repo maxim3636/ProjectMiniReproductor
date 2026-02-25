@@ -1,0 +1,68 @@
+[
+    {
+        "any_edicio": 2025,
+        "titol_edicio": "The Game Awards 2025",
+        "nominats": [
+            {
+                "id": "gta6",
+                "titol": "Grand Theft Auto VI",
+                "categoria": "Most Anticipated",
+                "descripcio": "Torna a Vice City en l'aventura de món obert més ambiciosa.",
+                "miniatura": "assets/miniatura/gta6.jpg",
+                "video_url": "assets/video/gta6.mp4",
+                "durada_segons": 90
+            },
+            {
+                "id": "mhw",
+                "titol": "Monster Hunter Wilds",
+                "categoria": "Best Action",
+                "descripcio": "Una nova era de caça amb ecosistemes dinàmics.",
+                "miniatura": "https://via.placeholder.com/600x340/333333/FFFFFF?text=MH+Wilds",
+                "video_url": "assets/video/mhw.mp4",
+                "durada_segons": 135
+            },
+            {
+                "id": "ds2",
+                "titol": "Death Stranding 2",
+                "categoria": "Best Narrative",
+                "descripcio": "Connecta un món fracturat en la seqüela de Kojima.",
+                "miniatura": "https://via.placeholder.com/600x340/111111/FFFFFF?text=DS2",
+                "video_url": "assets/video/ds2.mp4",
+                "durada_segons": 210
+            }
+        ]
+    },
+    {
+        "any_edicio": 2024,
+        "titol_edicio": "The Game Awards 2024",
+        "nominats": [
+            {
+                "id": "astrobot",
+                "titol": "Astro Bot",
+                "categoria": "Game of the Year",
+                "descripcio": "Aventura de plataformes per l'univers PlayStation.",
+                "miniatura": "https://via.placeholder.com/600x340/0044AA/FFFFFF?text=Astro+Bot",
+                "video_url": "assets/video/astrobot.mp4",
+                "durada_segons": 120
+            },
+            {
+                "id": "ff7",
+                "titol": "FF VII Rebirth",
+                "categoria": "Best RPG",
+                "descripcio": "El viatge continua fora de Midgar.",
+                "miniatura": "https://via.placeholder.com/600x340/002200/FFFFFF?text=FF7+Rebirth",
+                "video_url": "assets/video/ff7.mp4",
+                "durada_segons": 180
+            },
+            {
+                "id": "metaphor",
+                "titol": "Metaphor: ReFantazio",
+                "categoria": "Best RPG",
+                "descripcio": "Lluita pel tron en un regne fantàstic.",
+                "miniatura": "https://via.placeholder.com/600x340/550000/FFFFFF?text=Metaphor",
+                "video_url": "assets/video/metaphor.mp4",
+                "durada_segons": 160
+            }
+        ]
+    }
+]
