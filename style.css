@@ -36,15 +36,30 @@ body {
 .logo { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
 .logo span { color: var(--accent); font-weight: 400; }
 
-/* Controls i Filtres */
+/* Controls i Filtres Estàtics */
 .controls-bar {
-    padding: 15px 20px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none;
+    padding: 15px 20px; 
+    display: flex; 
+    gap: 10px; 
+    flex-wrap: wrap; /* Fa que saltin a la línia de sota si la pantalla és molt estreta */
 }
-.controls-bar::-webkit-scrollbar { display: none; }
 
 select {
-    padding: 10px 16px; border-radius: 20px; border: none; background: var(--card-bg); font-size: 14px;
-    box-shadow: var(--shadow); color: var(--text-main); outline: none; cursor: pointer;
+    flex-grow: 1; /* Fa que ocupin tot l'espai disponible de forma equilibrada */
+    max-width: 100%; /* Evita que surtin per fora de la pantalla */
+    padding: 10px 16px; 
+    border-radius: 20px; 
+    border: none; 
+    background: var(--card-bg); 
+    font-size: 14px;
+    box-shadow: var(--shadow); 
+    color: var(--text-main); 
+    outline: none; 
+    cursor: pointer;
+    /* Si el text és molt llarg, el talla amb punts suspensius per no deformar el disseny */
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .content-list { flex-grow: 1; }
