@@ -1,13 +1,12 @@
 :root {
-    --bg-color: #F5F5F7;
-    /* Gris Apple */
-    --card-bg: #FFFFFF;
-    --text-main: #1D1D1F;
-    --text-sec: #86868B;
-    --accent: #0071E3;
-    /* Blau Apple */
-    --radius: 18px;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Paleta Dark Mode tipus Apple amb Accent TGA */
+    --bg-color: #000000;         /* Fons principal negre profund */
+    --card-bg: #1c1c1e;          /* Gris fosc Apple per a targetes */
+    --text-main: #f5f5f7;        /* Blanc trencat Apple */
+    --text-sec: #86868b;         /* Gris per a textos secundaris */
+    --accent: #ff4500;           /* Taronja TGA */
+    --radius: 18px;              /* Vores arrodonides Apple */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -18,103 +17,80 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Gestió de Pantalles */
-.screen {
-    display: none;
-    padding-bottom: 80px;
-    animation: fadeIn 0.3s ease;
+/* Gestió de Pantalles amb Flexbox per enganxar l'historial a sota */
+.screen { 
+    display: none; 
+    min-height: 100vh; 
+    animation: fadeIn 0.3s ease; 
+}
+.screen.active { 
+    display: block; /* Aquesta és la línia clau que faltava! */
+}
+#home-screen.active { 
+    display: flex; 
+    flex-direction: column; 
+}
+.screen.hidden { display: none; }
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
 }
 
-.screen.active {
-    display: block;
-}
-
-.screen.hidden {
-    display: none;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Header */
+/* Header translúcid (Efecte Vidre Apple) */
 .app-header {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(20px);
-    position: sticky;
-    top: 0;
+    -webkit-backdrop-filter: blur(20px);
+    position: sticky; 
+    top: 0; 
     z-index: 100;
     padding: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
 }
+.logo { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+.logo span { color: var(--accent); font-weight: 400; }
 
-.logo {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.logo span {
-    color: var(--text-sec);
-    font-weight: 400;
-}
-
-/* Controls i Filtres */
+/* Controls i Filtres tipus píndola */
 .controls-bar {
     padding: 15px 20px;
-    display: flex;
+    display: flex; 
     gap: 10px;
     overflow-x: auto;
+    scrollbar-width: none;
 }
+.controls-bar::-webkit-scrollbar { display: none; }
 
-select,
-button {
+select, button {
     padding: 10px 16px;
     border-radius: 20px;
     border: none;
     background: var(--card-bg);
     font-size: 14px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
     color: var(--text-main);
+    outline: none;
+}
+#sort-btn { font-weight: bold; cursor: pointer; color: var(--accent); }
+
+/* Llista de continguts (creix per empènyer l'historial a sota) */
+.content-list {
+    flex-grow: 1; 
 }
 
-#sort-btn {
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Llistes i Targetes */
-.year-section {
-    padding: 0 20px;
-    margin-top: 20px;
-}
-
-.year-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
+/* Targetes i Llistes */
+.year-section { padding: 0 20px; margin-top: 20px; }
+.year-title { font-size: 22px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); }
 
 .cards-container {
-    display: flex;
-    gap: 15px;
+    display: flex; 
+    gap: 15px; 
     overflow-x: auto;
     padding-bottom: 20px;
-    /* Hide scrollbar */
-    scrollbar-width: none;
+    scrollbar-width: none; 
 }
-
-.cards-container::-webkit-scrollbar {
-    display: none;
-}
+.cards-container::-webkit-scrollbar { display: none; }
 
 .card {
     min-width: 260px;
@@ -126,192 +102,113 @@ button {
     cursor: pointer;
     position: relative;
 }
+.card:active { transform: scale(0.98); }
 
-.card:active {
-    transform: scale(0.98);
-}
+.card-thumb { width: 100%; height: 150px; object-fit: cover; }
+.card-content { padding: 15px; }
+.card-title { margin: 0; font-size: 16px; font-weight: 600; }
+.card-cat { color: var(--accent); font-size: 13px; margin-top: 4px; font-weight: 500; }
 
-.card-thumb {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.card-content {
-    padding: 15px;
-}
-
-.card-title {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.card-cat {
-    color: var(--text-sec);
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.card-heart {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-}
-
-.card-heart.liked {
-    color: #FF2D55;
-    background: white;
-}
-
-/* Historial */
-.history-section {
-    margin-top: 30px;
-    padding: 20px;
-    background: #fff;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-}
-
-.history-scroll {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-top: 10px;
-}
-
-.history-item {
-    min-width: 120px;
-    font-size: 12px;
-    text-align: center;
-}
-
-.history-item img {
-    width: 100%;
-    height: 70px;
-    border-radius: 10px;
-    object-fit: cover;
-    margin-bottom: 5px;
-}
-
-/* Reproductor */
-.nav-btn {
-    background: none;
-    box-shadow: none;
-    font-size: 16px;
-    color: var(--accent);
-    margin: 10px;
-    cursor: pointer;
-}
-
-.video-container {
-    width: 100%;
-    background: black;
-    position: relative;
-}
-
-#main-video {
-    width: 100%;
-    display: block;
-    max-height: 60vh;
-}
-
-/* Controls Personalitzats Video */
-.custom-controls {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    color: white;
-}
-
-.controls-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.progress-bar-bg {
-    width: 100%;
-    height: 4px;
-    background: #555;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.progress-bar-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-}
-
-#play-pause-btn,
-#mute-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.video-info {
-    padding: 20px;
-}
-
-.info-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.category-tag {
-    display: inline-block;
-    background: #E5E5EA;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-sec);
-    margin-top: 5px;
-}
-
-.like-btn {
-    font-size: 30px;
-    background: none;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
-    color: #ccc;
-}
-
-.like-btn.liked {
-    color: #FF2D55;
-}
-
-/* Badges per a l'estat Vist */
+/* Badges (Vist i Cors) */
 .card-badges {
     position: absolute;
     top: 10px;
     left: 10px;
     z-index: 2;
-    display: flex;
-    gap: 5px;
 }
-
 .badge-seen {
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: var(--text-main);
+    padding: 4px 8px;
+    border-radius: 12px;
     font-size: 12px;
-    backdrop-filter: blur(4px);
 }
+.card-heart { 
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white; 
+    border-radius: 50%; 
+    width: 32px; 
+    height: 32px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 18px; 
+    z-index: 2;
+}
+.card-heart.liked { color: var(--accent); }
+
+/* Historial (Fixat i enganxat a sota sense marges) */
+.history-section {
+    margin-top: auto; /* Empeny l'historial abaix de tot gràcies al flexbox */
+    padding: 20px;
+    background: var(--card-bg); 
+    border-top-left-radius: 24px; 
+    border-top-right-radius: 24px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+}
+.history-section h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--text-sec); font-weight: 600;}
+.history-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.history-scroll::-webkit-scrollbar { display: none; }
+.history-item { min-width: 120px; font-size: 12px; text-align: center; cursor: pointer; color: var(--text-sec); }
+.history-item img { width: 100%; height: 70px; border-radius: 10px; object-fit: cover; margin-bottom: 5px; }
+
+/* Reproductor */
+.nav-btn { 
+    background: none; box-shadow: none; font-size: 16px; color: var(--accent); 
+    margin: 10px 15px; cursor: pointer; padding: 0; font-weight: 500;
+}
+.video-container { width: 100%; background: #000; position: relative; }
+#main-video { width: 100%; display: block; max-height: 60vh; }
+
+/* Controls Personalitzats del Reproductor */
+.custom-controls {
+    background: rgba(28, 28, 30, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px;
+    color: white;
+}
+.controls-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+#time-display { font-size: 13px; color: var(--text-sec); flex-grow: 1; text-align: center; font-variant-numeric: tabular-nums; }
+
+.icon-btn { background: none; border: none; color: white; width: 32px; height: 32px; padding: 4px; cursor: pointer; box-shadow: none; }
+.icon-btn svg { width: 100%; height: 100%; }
+
+/* Sliders estilitzats (Apple Style) */
+.styled-slider { 
+    -webkit-appearance: none; 
+    width: 100%; 
+    height: 6px; 
+    background: #3a3a3c; 
+    border-radius: 3px; 
+    outline: none; 
+    margin: 5px 0; 
+}
+.styled-slider::-webkit-slider-thumb { 
+    -webkit-appearance: none; 
+    appearance: none; 
+    width: 16px; 
+    height: 16px; 
+    border-radius: 50%; 
+    background: var(--text-main); 
+    cursor: pointer; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.vol-control { display: flex; align-items: center; gap: 5px; width: 100px; }
+.vol-slider { width: 60px; }
+
+/* Info del Vídeo */
+.video-info { padding: 20px; }
+.info-header { display: flex; justify-content: space-between; align-items: flex-start; }
+#player-title { margin: 0 0 5px 0; font-size: 24px; font-weight: 700;}
+.category-tag { display: inline-block; background: var(--card-bg); padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent); margin-top: 5px;}
+.like-btn { font-size: 30px; background: none; border: none; box-shadow: none; cursor: pointer; color: #555; padding: 0;}
+.like-btn.liked { color: var(--accent); }
+.hidden { display: none !important; }

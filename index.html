@@ -1,73 +1,83 @@
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TGA: The Nominees</title>
+    <title>TGA: The Winners</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <section id="home-screen" class="screen active">
         <header class="app-header">
-            <div class="logo">TGA <span>Nominees</span></div>
+            <div class="logo">THE GAME <span>AWARDS</span></div>
         </header>
 
         <div class="controls-bar">
             <select id="category-filter">
                 <option value="all">Totes les categories</option>
                 <option value="Game of the Year">Game of the Year</option>
-                <option value="Most Anticipated">Most Anticipated</option>
+                <option value="Best Game Direction">Best Game Direction</option>
                 <option value="Best RPG">Best RPG</option>
+                <option value="Best Art Direction">Best Art Direction</option>
                 <option value="favorites">❤ Els meus favorits</option>
             </select>
-            <button id="sort-btn" title="Canviar ordre">⇅</button>
+            <button id="sort-btn" title="Canviar ordre">A-Z</button>
         </div>
 
-        <div id="content-list" class="content-list">
-        </div>
+        <div id="content-list" class="content-list"></div>
 
         <div class="history-section">
-            <h3><span class="icon">↺</span> Recents</h3>
-            <div id="history-list" class="history-scroll">
-            </div>
+            <h3>↺ Últims vistos</h3>
+            <div id="history-list" class="history-scroll"></div>
         </div>
     </section>
 
     <section id="player-screen" class="screen hidden">
         <button id="back-btn" class="nav-btn">← Tornar</button>
-
+        
         <div class="video-container">
             <video id="main-video" playsinline>
                 <source src="" type="video/mp4">
-                El teu navegador no suporta vídeo HTML5.
             </video>
-
+            
             <div class="custom-controls">
-                <div class="progress-bar-bg" id="progress-container">
-                    <div class="progress-bar-fill" id="progress-fill"></div>
-                </div>
+                <input type="range" id="progress-slider" class="styled-slider" min="0" max="100" value="0">
+                
                 <div class="controls-row">
-                    <button id="play-pause-btn">▶</button>
+                    <button id="play-pause-btn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    
                     <span id="time-display">00:00 / 00:00</span>
-                    <button id="mute-btn">🔊</button>
+                    
+                    <div class="vol-control">
+                        <button id="mute-btn" class="icon-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                        </button>
+                        <input type="range" id="volume-slider" class="styled-slider vol-slider" min="0" max="1" step="0.05" value="1">
+                    </div>
+                    
+                    <button id="fullscreen-btn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
 
         <div class="video-info">
             <div class="info-header">
-                <h1 id="player-title">Títol del Joc</h1>
+                <div>
+                    <h1 id="player-title">Títol</h1>
+                    <span id="player-seen-badge" class="badge-seen hidden">👁 Vist</span>
+                </div>
                 <button id="player-like-btn" class="like-btn">♡</button>
             </div>
             <p id="player-category" class="category-tag">Categoria</p>
-            <p id="player-desc">Descripció del joc...</p>
+            <p id="player-desc">Descripció</p>
         </div>
     </section>
 
     <script src="script.js"></script>
 </body>
-
 </html>

@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Referències DOM
     const contentList = document.getElementById('content-list');
     const historyList = document.getElementById('history-list');
     const playerScreen = document.getElementById('player-screen');
     const homeScreen = document.getElementById('home-screen');
     const videoEl = document.getElementById('main-video');
-
-    // Variables d'Estat
-    let allData = []; // Guardarem tot el JSON aquí
+    
+    let allData = [];
     let currentVideoId = null;
+    let currentSort = 'default'; // 'default', 'az', 'za'
 
-    // --- 1. Càrrega de Dades ---
+    // Icones SVG per al botó Play/Pause
+    const svgPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    const svgPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
@@ -20,60 +22,53 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error("Error carregant JSON:", err));
 
-    // --- 2. Renderitzat de la Pantalla Principal ---
     function renderHome(dataToRender) {
-        const contentList = document.getElementById('content-list');
-        contentList.innerHTML = ''; // Netejar llista prèvia
-
-        // Comprovem si hi ha dades; si no, mostrem missatge
+        contentList.innerHTML = '';
         if (!dataToRender || dataToRender.length === 0) {
-            contentList.innerHTML = '<p style="text-align:center; padding:20px;">No s\'han trobat jocs.</p>';
+            contentList.innerHTML = '<p style="text-align:center; padding:20px;">No hi ha resultats.</p>';
             return;
         }
 
         dataToRender.forEach(edicio => {
-            // 1. Creem el títol de l'Any (ex: 2025)
+            // Clonant l'array per no alterar l'original a l'hora d'ordenar
+            let jocsArray = [...edicio.guanyadors];
+
+            // Aplicar ordenació si cal
+            if(currentSort === 'az') {
+                jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
+            } else if (currentSort === 'za') {
+                jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
+            }
+
+            if(jocsArray.length === 0) return; // Si després de filtrar no hi ha jocs en aquest any, saltem
+
             const section = document.createElement('div');
             section.className = 'year-section';
-
-            const title = document.createElement('h2');
-            title.className = 'year-title';
-            title.innerText = edicio.any_edicio;
-            section.appendChild(title);
-
-            // 2. Creem el contenidor de targetes (scroll horitzontal)
+            section.innerHTML = `<h2 class="year-title">${edicio.any_edicio}</h2>`;
+            
             const cardsContainer = document.createElement('div');
             cardsContainer.className = 'cards-container';
 
-            // 3. Generem cada targeta de joc
-            edicio.nominats.forEach(joc => {
-                // Recuperem estats del LocalStorage
+            jocsArray.forEach(joc => {
                 const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
                 const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
-                const isSeen = timePlayed > 10; // Considerem "vist" si s'ha reproduït més de 10 segons
+                const isSeen = timePlayed > 5;
 
                 const card = document.createElement('div');
                 card.className = 'card';
-
-                // Event: Al fer clic a la targeta, obrim el reproductor
                 card.onclick = (e) => {
-                    // Si fem clic al cor, no obrim el vídeo
-                    if (e.target.classList.contains('card-heart')) return;
+                    if(e.target.classList.contains('card-heart')) return;
                     openPlayer(joc);
                 };
 
-                // HTML INTERN DE LA TARGETA
-                // Inclou: Imatge, Títol, Categoria, Cor (Me gusta) i Ull (Vist)
                 card.innerHTML = `
                     <div class="card-badges">
-                        ${isSeen ? '<span class="badge-seen" title="Vist">👁</span>' : ''}
+                        ${isSeen ? '<span class="badge-seen">👁</span>' : ''}
                     </div>
                     <div class="card-heart ${isLiked ? 'liked' : ''}" onclick="toggleLike('${joc.id}', this)">
                         ${isLiked ? '♥' : '♡'}
                     </div>
-                    
                     <img src="${joc.miniatura}" class="card-thumb" alt="${joc.titol}">
-                    
                     <div class="card-content">
                         <h3 class="card-title">${joc.titol}</h3>
                         <p class="card-cat">${joc.categoria}</p>
@@ -81,42 +76,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 cardsContainer.appendChild(card);
             });
-
             section.appendChild(cardsContainer);
             contentList.appendChild(section);
         });
     }
 
-    // --- 3. Funcions del Reproductor ---
-    window.openPlayer = function (joc) {
-        // Navegació
+    // Ordenació
+    document.getElementById('sort-btn').addEventListener('click', (e) => {
+        if (currentSort === 'default' || currentSort === 'za') {
+            currentSort = 'az';
+            e.target.innerText = 'Ordre: A-Z';
+        } else {
+            currentSort = 'za';
+            e.target.innerText = 'Ordre: Z-A';
+        }
+        document.getElementById('category-filter').dispatchEvent(new Event('change')); // Força a re-renderitzar respectant el filtre actual
+    });
+
+    // Filtres
+    document.getElementById('category-filter').addEventListener('change', (e) => {
+        const filter = e.target.value;
+        if(filter === 'all') {
+            renderHome(allData);
+        } else if (filter === 'favorites') {
+             const filteredData = allData.map(edicio => {
+                return { ...edicio, guanyadors: edicio.guanyadors.filter(g => localStorage.getItem(`like_${g.id}`) === 'true') };
+             });
+             renderHome(filteredData);
+        } else {
+            const filteredData = allData.map(edicio => {
+                return { ...edicio, guanyadors: edicio.guanyadors.filter(g => g.categoria === filter) };
+             });
+             renderHome(filteredData);
+        }
+    });
+
+    // Reproductor
+    window.openPlayer = function(joc) {
         homeScreen.classList.remove('active');
         homeScreen.classList.add('hidden');
         playerScreen.classList.remove('hidden');
         playerScreen.classList.add('active');
 
-        // Carregar Dades
         currentVideoId = joc.id;
         document.getElementById('player-title').innerText = joc.titol;
         document.getElementById('player-desc').innerText = joc.descripcio;
         document.getElementById('player-category').innerText = joc.categoria;
         videoEl.src = joc.video_url;
 
-        // Gestió 'Like' al reproductor
+        // Mostrar 'Vist' al reproductor
+        const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
+        const seenBadge = document.getElementById('player-seen-badge');
+        if (timePlayed > 5) {
+            seenBadge.classList.remove('hidden');
+        } else {
+            seenBadge.classList.add('hidden');
+        }
+
         const likeBtn = document.getElementById('player-like-btn');
         const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
         likeBtn.className = isLiked ? 'like-btn liked' : 'like-btn';
         likeBtn.innerText = isLiked ? '♥' : '♡';
         likeBtn.onclick = () => { toggleLike(joc.id, likeBtn); };
 
-        // Recuperar punt de reproducció (LocalStorage)
-        const savedTime = localStorage.getItem(`time_${joc.id}`);
-        if (savedTime) {
-            videoEl.currentTime = parseFloat(savedTime);
-        }
-
-        // Afegir a Historial
+        if(timePlayed) videoEl.currentTime = timePlayed;
         addToHistory(joc);
+        
+        // Reinicia icona play
+        document.getElementById('play-pause-btn').innerHTML = svgPlay;
     };
 
     document.getElementById('back-btn').addEventListener('click', () => {
@@ -125,78 +152,84 @@ document.addEventListener('DOMContentLoaded', () => {
         playerScreen.classList.add('hidden');
         homeScreen.classList.remove('hidden');
         homeScreen.classList.add('active');
-        renderHome(allData); // Re-render per actualitzar estats
+        document.getElementById('category-filter').dispatchEvent(new Event('change')); // Refresca Home
         renderHistory();
     });
 
-    // --- 4. Controls de Vídeo Personalitzats ---
+    // Controls Repro
     const playBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
-    const progressBar = document.getElementById('progress-fill');
-    const progressContainer = document.getElementById('progress-container');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const progressSlider = document.getElementById('progress-slider');
+    const volumeSlider = document.getElementById('volume-slider');
     const timeDisplay = document.getElementById('time-display');
 
     playBtn.addEventListener('click', () => {
-        if (videoEl.paused) {
+        if(videoEl.paused) {
             videoEl.play();
-            playBtn.innerText = '⏸';
+            playBtn.innerHTML = svgPause;
         } else {
             videoEl.pause();
-            playBtn.innerText = '▶';
+            playBtn.innerHTML = svgPlay;
         }
+    });
+
+    // Control Volum Lliscant
+    volumeSlider.addEventListener('input', (e) => {
+        videoEl.volume = e.target.value;
+        videoEl.muted = (videoEl.volume === 0);
     });
 
     muteBtn.addEventListener('click', () => {
         videoEl.muted = !videoEl.muted;
-        muteBtn.innerText = videoEl.muted ? '🔇' : '🔊';
-    });
-
-    videoEl.addEventListener('timeupdate', () => {
-        // Actualitzar barra
-        const percentage = (videoEl.currentTime / videoEl.duration) * 100;
-        progressBar.style.width = `${percentage}%`;
-
-        // Actualitzar text temps
-        timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
-
-        // Guardar progrés a LocalStorage
-        if (currentVideoId) {
-            localStorage.setItem(`time_${currentVideoId}`, videoEl.currentTime);
+        if(videoEl.muted) {
+            volumeSlider.value = 0;
+        } else {
+            volumeSlider.value = videoEl.volume || 1;
         }
     });
 
-    // Clic a la barra de progrés
-    progressContainer.addEventListener('click', (e) => {
-        const rect = progressContainer.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        videoEl.currentTime = pos * videoEl.duration;
+    // Pantalla Completa
+    fullscreenBtn.addEventListener('click', () => {
+        if (videoEl.requestFullscreen) {
+            videoEl.requestFullscreen();
+        } else if (videoEl.webkitRequestFullscreen) { /* Safari */
+            videoEl.webkitRequestFullscreen();
+        }
     });
 
-    // --- 5. Funcionalitats Extres (LocalStorage & Filtres) ---
+    // Control Progrés Lliscant
+    videoEl.addEventListener('timeupdate', () => {
+        if(videoEl.duration) {
+            // Actualitzem l'slider nativament
+            progressSlider.value = (videoEl.currentTime / videoEl.duration) * 100;
+        }
+        timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
+        if(currentVideoId) localStorage.setItem(`time_${currentVideoId}`, videoEl.currentTime);
+    });
 
-    // M'agrada Global
-    window.toggleLike = function (id, btnElement) {
+    progressSlider.addEventListener('input', (e) => {
+        if(videoEl.duration) {
+            videoEl.currentTime = (e.target.value / 100) * videoEl.duration;
+        }
+    });
+
+    // Funcions extra
+    window.toggleLike = function(id, btnElement) {
         const key = `like_${id}`;
         const current = localStorage.getItem(key) === 'true';
         localStorage.setItem(key, !current);
-
-        // Actualitzar UI visualment sense recarregar tot
-        if (btnElement) {
+        if(btnElement) {
             btnElement.classList.toggle('liked');
             btnElement.innerText = !current ? '♥' : '♡';
         }
     };
 
-    // Historial
     function addToHistory(joc) {
         let history = JSON.parse(localStorage.getItem('videoHistory')) || [];
-        // Eliminar si ja existeix (per posar-lo al principi)
         history = history.filter(item => item.id !== joc.id);
-        // Afegir al principi
         history.unshift({ id: joc.id, titol: joc.titol, miniatura: joc.miniatura });
-        // Mantenir només els últims 6
-        if (history.length > 6) history.pop();
-
+        if(history.length > 6) history.pop();
         localStorage.setItem('videoHistory', JSON.stringify(history));
     }
 
@@ -206,47 +239,20 @@ document.addEventListener('DOMContentLoaded', () => {
         history.forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
-            div.innerHTML = `<img src="${item.miniatura}"><span>${item.titol}</span>`;
-            div.onclick = () => {
-                // Busquem el joc sencer a allData per obrir-lo
+            div.innerHTML = `<img src="${item.miniatura}"><br><span>${item.titol}</span>`;
+            div.onclick = () => { 
                 let foundGame = null;
-                allData.forEach(y => y.nominats.forEach(g => { if (g.id === item.id) foundGame = g; }));
-                if (foundGame) openPlayer(foundGame);
+                allData.forEach(y => y.guanyadors.forEach(g => { if(g.id === item.id) foundGame = g; }));
+                if(foundGame) openPlayer(foundGame);
             };
             historyList.appendChild(div);
         });
     }
 
-    // Filtres
-    document.getElementById('category-filter').addEventListener('change', (e) => {
-        const filter = e.target.value;
-        if (filter === 'all') {
-            renderHome(allData);
-        } else if (filter === 'favorites') {
-            // Filtrar només favorits
-            const filteredData = allData.map(edicio => {
-                return {
-                    ...edicio,
-                    nominats: edicio.nominats.filter(g => localStorage.getItem(`like_${g.id}`) === 'true')
-                };
-            }).filter(e => e.nominats.length > 0);
-            renderHome(filteredData);
-        } else {
-            // Filtrar per categoria
-            const filteredData = allData.map(edicio => {
-                return {
-                    ...edicio,
-                    nominats: edicio.nominats.filter(g => g.categoria === filter)
-                };
-            }).filter(e => e.nominats.length > 0);
-            renderHome(filteredData);
-        }
-    });
-
-    // Helper temps
     function formatTime(seconds) {
+        if(isNaN(seconds)) return "0:00";
         const m = Math.floor(seconds / 60);
         const s = Math.floor(seconds % 60);
-        return `${m}:${s < 10 ? '0' + s : s}`;
+        return `${m}:${s < 10 ? '0'+s : s}`;
     }
 });
