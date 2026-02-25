@@ -8,7 +8,7 @@
         "titol": "Clair Obscur: Expedition 33",
         "categories": ["Game of the Year", "Best RPG", "Best Game Direction", "Best Art Direction"],
         "descripcio": "Una èpica i innovadora aventura que va arrasar emportant-se també Millor RPG i Direcció.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Expedition+33",
+        "miniatura": "assets/miniatura/clair.jpg",
         "video_url": "assets/video/clair.mp4",
         "durada_segons": 140,
         "data_llançament": "2025-05-15"
@@ -18,10 +18,30 @@
         "titol": "Hollow Knight: Silksong",
         "categories": ["Best Action/Adventure", "Best Independent Game"],
         "descripcio": "La tan esperada seqüela protagonitzada per Hornet que ha complert totes les expectatives.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Silksong",
+        "miniatura": "assets/miniatura/silksong.jpg",
         "video_url": "assets/video/silksong.mp4",
         "durada_segons": 115,
         "data_llançament": "2025-02-14"
+      },
+      {
+        "id": "gta6_25",
+        "titol": "Grand Theft Auto VI",
+        "categories": ["Best Narrative", "Best Action/Adventure"],
+        "descripcio": "El retorn a Vice City amb la història de la Lucia i el Jason. El llançament més gran de la dècada.",
+        "miniatura": "assets/miniatura/gta6.jpg",
+        "video_url": "assets/video/gta6.mp4",
+        "durada_segons": 150,
+        "data_llançament": "2025-11-20"
+      },
+      {
+        "id": "mhw25",
+        "titol": "Monster Hunter Wilds",
+        "categories": ["Best Action Game"],
+        "descripcio": "L'evolució definitiva de la cacera de monstres amb ecosistemes vius i climes extrems.",
+        "miniatura": "assets/miniatura/mhw.jpg",
+        "video_url": "assets/video/mhw.mp4",
+        "durada_segons": 135,
+        "data_llançament": "2025-02-28"
       }
     ]
   },
@@ -44,7 +64,7 @@
         "titol": "Metaphor: ReFantazio",
         "categories": ["Best RPG", "Best Narrative", "Best Art Direction"],
         "descripcio": "Una direcció artística inigualable en un món de fantasia únic creat pels mestres d'Atlus.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Metaphor",
+        "miniatura": "assets/miniatura/metaphor.jpg",
         "video_url": "assets/video/metaphor.mp4",
         "durada_segons": 150,
         "data_llançament": "2024-10-11"
@@ -54,7 +74,7 @@
         "titol": "Final Fantasy VII Rebirth",
         "categories": ["Best Score and Music"],
         "descripcio": "La continuació del viatge més enllà de Midgar amb una banda sonora inoblidable.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=FFVII+Rebirth",
+        "miniatura": "assets/miniatura/ff7.jpg",
         "video_url": "assets/video/ff7.mp4",
         "durada_segons": 180,
         "data_llançament": "2024-02-29"
@@ -64,7 +84,7 @@
         "titol": "Black Myth: Wukong",
         "categories": ["Best Action Game"],
         "descripcio": "Acció frenètica basada en la mitologia xinesa clàssica.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Wukong",
+        "miniatura": "assets/miniatura/wukong.jpg",
         "video_url": "assets/video/wukong.mp4",
         "durada_segons": 130,
         "data_llançament": "2024-08-20"
@@ -80,7 +100,7 @@
         "titol": "Baldur's Gate 3",
         "categories": ["Game of the Year", "Best RPG", "Best Multiplayer", "Best Community Support"],
         "descripcio": "L'èpica aventura de rol que ha redefinit la llibertat i el gènere per complet.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Baldurs+Gate+3",
+        "miniatura": "assets/miniatura/bg3.jpg",
         "video_url": "assets/video/bg3.mp4",
         "durada_segons": 140,
         "data_llançament": "2023-08-03"
@@ -90,7 +110,7 @@
         "titol": "Alan Wake 2",
         "categories": ["Best Game Direction", "Best Narrative", "Best Art Direction"],
         "descripcio": "Misteri, terror i una narrativa visual espectacular que trenca la quarta paret.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Alan+Wake+2",
+        "miniatura": "assets/miniatura/aw2.jpg",
         "video_url": "assets/video/aw2.mp4",
         "durada_segons": 160,
         "data_llançament": "2023-10-27"
@@ -100,10 +120,20 @@
         "titol": "Zelda: Tears of the Kingdom",
         "categories": ["Best Action/Adventure"],
         "descripcio": "Exploració sense límits i físiques increïbles als cels i profunditats de Hyrule.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Zelda+TotK",
+        "miniatura": "assets/miniatura/zelda.jpg",
         "video_url": "assets/video/zelda.mp4",
         "durada_segons": 170,
         "data_llançament": "2023-05-12"
+      },
+      {
+        "id": "mario23",
+        "titol": "Super Mario Bros. Wonder",
+        "categories": ["Best Family Game"],
+        "descripcio": "El retorn a les 2D del lampista més famós amb nivells completament sorprenents i psicodèlics.",
+        "miniatura": "assets/miniatura/mario.jpg",
+        "video_url": "assets/video/mario.mp4",
+        "durada_segons": 110,
+        "data_llançament": "2023-10-20"
       }
     ]
   }

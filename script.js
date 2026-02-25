@@ -31,21 +31,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Ordenació per edicions
         let edicionsArray = [...dataToRender];
-        if (currentSort === 'newest') edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
-        else if (currentSort === 'oldest') edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
-        else edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        if (currentSort === 'newest') {
+            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        } else if (currentSort === 'oldest') {
+            edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
+        } else {
+            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        }
 
         // 2. Renderitzat dels anys
         edicionsArray.forEach(edicio => {
             let jocsArray = [...edicio.guanyadors];
 
-            // 3. Ordenació per títol o estat
-            if (currentSort === 'az') jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
-            else if (currentSort === 'za') jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
-            else if (currentSort === 'unseen') {
+            // 3. Ordenació per títol o estat (ara mirant si la targeta s'ha obert)
+            if (currentSort === 'az') {
+                jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
+            } else if (currentSort === 'za') {
+                jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
+            } else if (currentSort === 'unseen') {
                 jocsArray.sort((a, b) => {
-                    const vistA = (parseFloat(localStorage.getItem(`time_${a.id}`)) || 0) > 5 ? 1 : 0;
-                    const vistB = (parseFloat(localStorage.getItem(`time_${b.id}`)) || 0) > 5 ? 1 : 0;
+                    const vistA = localStorage.getItem(`opened_${a.id}`) === 'true' ? 1 : 0;
+                    const vistB = localStorage.getItem(`opened_${b.id}`) === 'true' ? 1 : 0;
                     return vistA - vistB;
                 });
             }
@@ -61,8 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             jocsArray.forEach(joc => {
                 const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
-                const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
-                const isSeen = timePlayed > 5;
+                
+                // Mirem si la targeta ha estat oberta alguna vegada
+                const isSeen = localStorage.getItem(`opened_${joc.id}`) === 'true';
+
+                // Etiqueta dinàmica ✨ NEW o 👁 Vist
+                const badgeHTML = isSeen 
+                    ? '<span class="badge-seen">👁 Vist</span>' 
+                    : '<span class="badge-seen badge-new">✨ NEW</span>';
 
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -71,12 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     openPlayer(joc);
                 };
 
-                // Formateig de la llista de categories a petits tags HTML
                 const tagsHTML = joc.categories.map(c => `<span class="card-cat">${c}</span>`).join('');
 
                 card.innerHTML = `
                     <div class="card-badges">
-                        ${isSeen ? '<span class="badge-seen">👁 Vist</span>' : ''}
+                        ${badgeHTML}
                     </div>
                     <div class="card-heart ${isLiked ? 'liked' : ''}" onclick="toggleLike('${joc.id}', this)">
                         ${isLiked ? '♥' : '♡'}
@@ -108,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
              renderHome(filteredData);
         } else {
              const filteredData = allData.map(edicio => {
-                // Comprovem si l'array de categories del joc conté el filtre seleccionat
                 return { ...edicio, guanyadors: edicio.guanyadors.filter(g => g.categories.includes(filter)) };
              });
              renderHome(filteredData);
@@ -121,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navegació Reproductor
     window.openPlayer = function(joc) {
+        // MARQUEM COM A OBERT DEFINITIVAMENT AL LOCALSTORAGE
+        localStorage.setItem(`opened_${joc.id}`, 'true');
+
         homeScreen.classList.remove('active');
         homeScreen.classList.add('hidden');
         playerScreen.classList.remove('hidden');
@@ -135,10 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const playerTagsHTML = joc.categories.map(c => `<span class="category-tag">${c}</span>`).join('');
         document.getElementById('player-categories-container').innerHTML = playerTagsHTML;
 
-        const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
+        // Com que acabem d'obrir-lo, al reproductor SEMPRE serà "Vist"
         const seenBadge = document.getElementById('player-seen-badge');
-        if (timePlayed > 5) seenBadge.classList.remove('hidden');
-        else seenBadge.classList.add('hidden');
+        seenBadge.classList.remove('hidden'); 
+        seenBadge.innerText = '👁 Vist';
+        seenBadge.className = 'badge-seen'; 
 
         const likeBtn = document.getElementById('player-like-btn');
         const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
@@ -146,12 +160,26 @@ document.addEventListener('DOMContentLoaded', () => {
         likeBtn.innerText = isLiked ? '♥' : '♡';
         likeBtn.onclick = () => { toggleLike(joc.id, likeBtn); };
 
+        // Recuperem el temps si ja l'havíem vist abans
+        const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
         if(timePlayed) videoEl.currentTime = timePlayed;
+        
+        // Forcem que surti la durada del JSON a l'instant
+        document.getElementById('time-display').innerText = `${formatTime(timePlayed)} / ${formatTime(joc.durada_segons)}`;
+        
         addToHistory(joc);
         
         document.getElementById('play-pause-btn').innerHTML = svgPlay;
-        document.getElementById('progress-slider').value = 0;
-        document.getElementById('progress-slider').style.background = 'rgba(255, 255, 255, 0.3)';
+        
+        // El slider depèn de si ja tenia temps guardat o no
+        if(joc.durada_segons && timePlayed) {
+            const perc = (timePlayed / joc.durada_segons) * 100;
+            document.getElementById('progress-slider').value = perc;
+            document.getElementById('progress-slider').style.background = `linear-gradient(to right, #ff4500 ${perc}%, rgba(255, 255, 255, 0.3) ${perc}%)`;
+        } else {
+            document.getElementById('progress-slider').value = 0;
+            document.getElementById('progress-slider').style.background = 'rgba(255, 255, 255, 0.3)';
+        }
     };
 
     document.getElementById('back-btn').addEventListener('click', () => {
@@ -173,8 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeDisplay = document.getElementById('time-display');
 
     playBtn.addEventListener('click', () => {
-        if(videoEl.paused) { videoEl.play(); playBtn.innerHTML = svgPause; }
-        else { videoEl.pause(); playBtn.innerHTML = svgPlay; }
+        if(videoEl.paused) { 
+            videoEl.play(); 
+            playBtn.innerHTML = svgPause; 
+        } else { 
+            videoEl.pause(); 
+            playBtn.innerHTML = svgPlay; 
+        }
     });
 
     volumeSlider.addEventListener('input', (e) => {
@@ -188,9 +221,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     fullscreenBtn.addEventListener('click', () => {
-        if (videoEl.requestFullscreen) videoEl.requestFullscreen();
-        else if (videoEl.webkitRequestFullscreen) videoEl.webkitRequestFullscreen();
-        else if (videoEl.webkitEnterFullscreen) videoEl.webkitEnterFullscreen();
+        if (videoEl.requestFullscreen) {
+            videoEl.requestFullscreen();
+        } else if (videoEl.webkitRequestFullscreen) {
+            videoEl.webkitRequestFullscreen();
+        } else if (videoEl.webkitEnterFullscreen) {
+            videoEl.webkitEnterFullscreen();
+        }
+    });
+
+    // Quan el navegador llegeix el vídeo, actualitza el text de forma nativa
+    videoEl.addEventListener('loadedmetadata', () => {
+        timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
     });
 
     videoEl.addEventListener('timeupdate', () => {

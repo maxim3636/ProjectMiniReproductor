@@ -119,26 +119,36 @@ select {
     display: none; 
 }
 
-/* Totes les targetes tenen la mateixa mida exacta */
+/* Targetes amb mides estrictes per ordinador i mòbil */
 .card {
-    width: 280px; /* Obliga a tenir aquesta amplada */
+    width: 280px; 
     min-width: 280px; 
-    max-width: 280px; /* Impedeix que creixi */
-    flex-shrink: 0; /* Impedeix que s'encongeixi en Flexbox */
+    max-width: 280px; 
+    flex-shrink: 0; 
     height: 260px; 
     background: var(--card-bg); 
     border-radius: var(--radius); 
     overflow: hidden;
     box-shadow: var(--shadow); 
-    transition: transform 0.2s; 
+    /* Hem afegit 'box-shadow' a la transició perquè sigui suau */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
     cursor: pointer; 
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
+/* NOU: Efecte flotant al passar el ratolí */
+.card:hover {
+    transform: translateY(-6px); /* Aixeca la targeta 6 píxels cap amunt */
+    /* Ombra més profunda + un reflex taronja molt subtil a sota */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8), 0 8px 16px rgba(255, 69, 0, 0.15); 
+}
+
+/* Mantenim l'efecte d'enfonsar-se al fer clic, però adaptat a la nova alçada */
 .card:active { 
-    transform: scale(0.98); 
+    transform: translateY(-2px) scale(0.98); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .card-thumb { 
@@ -188,7 +198,7 @@ select {
     white-space: nowrap; 
 }
 
-/* Etiquetes flotants sobre la imatge (Ull i Cor) */
+/* Etiquetes flotants sobre la imatge (Ull/NEW i Cor) */
 .card-badges { 
     position: absolute; 
     top: 10px; 
@@ -204,6 +214,12 @@ select {
     padding: 4px 8px; 
     border-radius: 12px; 
     font-size: 12px;
+}
+
+.badge-new {
+    background: rgba(255, 69, 0, 0.85); 
+    color: white;
+    font-weight: bold;
 }
 
 .card-heart { 
@@ -230,7 +246,7 @@ select {
 
 /* Historial de Mides Fixes (Sempre a baix) */
 .history-section {
-    margin-top: auto; 
+    margin-top: 15px; 
     padding: 20px; 
     background: var(--card-bg); 
     border-top-left-radius: 24px; 
@@ -365,6 +381,7 @@ select {
 
 .styled-slider { 
     -webkit-appearance: none; 
+    appearance: none;
     width: 100%; 
     height: 4px; 
     background: rgba(255, 255, 255, 0.3); 
@@ -410,8 +427,8 @@ select {
 .info-header { 
     display: flex; 
     justify-content: space-between; 
-    align-items: center; /* Centra verticalment l'ull i el cor */
-    margin-bottom: 8px; /* Dóna espai abans del títol del joc */
+    align-items: center; 
+    margin-bottom: 8px; 
 }
 
 #player-title { 
