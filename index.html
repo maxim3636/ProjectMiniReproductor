@@ -18,15 +18,19 @@
                 <option value="all">Totes les categories</option>
                 <option value="Game of the Year">Game of the Year</option>
                 <option value="Best Game Direction">Best Game Direction</option>
-                <option value="Best RPG">Best RPG</option>
+                <option value="Best Narrative">Best Narrative</option>
                 <option value="Best Art Direction">Best Art Direction</option>
+                <option value="Best RPG">Best RPG</option>
                 <option value="Best Action/Adventure">Best Action/Adventure</option>
+                <option value="Best Action Game">Best Action Game</option>
+                <option value="Best Score and Music">Best Score and Music</option>
+                <option value="Best Family Game">Best Family Game</option>
                 <option value="favorites">❤ Els meus favorits</option>
             </select>
             
             <select id="sort-filter">
                 <option value="default">Ordre per defecte</option>
-                <option value="newest">Més recents (2024+)</option>
+                <option value="newest">Més recents (2025+)</option>
                 <option value="oldest">Més antics (2023+)</option>
                 <option value="az">Títol: A-Z</option>
                 <option value="za">Títol: Z-A</option>
@@ -52,23 +56,19 @@
             
             <div class="custom-controls">
                 <input type="range" id="progress-slider" class="styled-slider" min="0" max="100" value="0">
-                
                 <div class="controls-row">
                     <div class="controls-left">
                         <button id="play-pause-btn" class="icon-btn">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                         </button>
-                        
                         <div class="vol-control">
                             <button id="mute-btn" class="icon-btn">
                                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
                             </button>
                             <input type="range" id="volume-slider" class="styled-slider vol-slider" min="0" max="1" step="0.05" value="1">
                         </div>
-                        
                         <span id="time-display">0:00 / 0:00</span>
                     </div>
-                    
                     <div class="controls-right">
                         <button id="fullscreen-btn" class="icon-btn">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -80,13 +80,13 @@
 
         <div class="video-info">
             <div class="info-header">
-                <div>
-                    <h1 id="player-title">Títol</h1>
-                    <span id="player-seen-badge" class="badge-seen hidden">👁 Vist</span>
-                </div>
+                <span id="player-seen-badge" class="badge-seen hidden">👁 Vist</span>
                 <button id="player-like-btn" class="like-btn">♡</button>
             </div>
-            <p id="player-category" class="category-tag">Categoria</p>
+            
+            <h1 id="player-title">Títol</h1>
+            
+            <div id="player-categories-container"></div>
             <p id="player-desc">Descripció</p>
         </div>
     </section>

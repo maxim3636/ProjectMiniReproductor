@@ -9,18 +9,32 @@
 }
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
+    margin: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
     -webkit-font-smoothing: antialiased;
 }
 
 /* Gestió de Pantalles */
-.screen { display: none; min-height: 100vh; animation: fadeIn 0.3s ease; }
-.screen.active { display: block; }
-#home-screen.active { display: flex; flex-direction: column; }
-.screen.hidden { display: none !important; }
+.screen { 
+    display: none; 
+    min-height: 100vh; 
+    animation: fadeIn 0.3s ease; 
+}
+
+.screen.active { 
+    display: block; 
+}
+
+#home-screen.active { 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.screen.hidden { 
+    display: none !important; 
+}
 
 @keyframes fadeIn { 
     from { opacity: 0; transform: translateY(10px); } 
@@ -29,141 +43,412 @@ body {
 
 /* Header */
 .app-header {
-    background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    position: sticky; top: 0; z-index: 100; padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center;
+    background: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px);
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    text-align: center;
 }
-.logo { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-.logo span { color: var(--accent); font-weight: 400; }
+
+.logo { 
+    font-size: 24px; 
+    font-weight: 700; 
+    letter-spacing: -0.5px; 
+}
+
+.logo span { 
+    color: var(--accent); 
+    font-weight: 400; 
+}
 
 /* Controls i Filtres Estàtics */
 .controls-bar {
     padding: 15px 20px; 
     display: flex; 
     gap: 10px; 
-    flex-wrap: wrap; /* Fa que saltin a la línia de sota si la pantalla és molt estreta */
+    flex-wrap: wrap; 
 }
 
 select {
-    flex-grow: 1; /* Fa que ocupin tot l'espai disponible de forma equilibrada */
-    max-width: 100%; /* Evita que surtin per fora de la pantalla */
+    flex-grow: 1; 
+    max-width: 100%; 
     padding: 10px 16px; 
     border-radius: 20px; 
     border: none; 
     background: var(--card-bg); 
-    font-size: 14px;
+    font-size: 14px; 
     box-shadow: var(--shadow); 
     color: var(--text-main); 
     outline: none; 
-    cursor: pointer;
-    /* Si el text és molt llarg, el talla amb punts suspensius per no deformar el disseny */
+    cursor: pointer; 
     text-overflow: ellipsis; 
-    overflow: hidden;
+    overflow: hidden; 
     white-space: nowrap;
 }
 
-.content-list { flex-grow: 1; }
+.content-list { 
+    flex-grow: 1; 
+}
 
 /* Targetes i Llistes */
-.year-section { padding: 0 20px; margin-top: 20px; }
-.year-title { font-size: 22px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); }
-
-.cards-container {
-    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; 
+.year-section { 
+    padding: 0 20px; 
+    margin-top: 20px; 
 }
-.cards-container::-webkit-scrollbar { display: none; }
 
+.year-title { 
+    font-size: 22px; 
+    font-weight: 700; 
+    margin-bottom: 15px; 
+    color: var(--text-main); 
+}
+
+.cards-container { 
+    display: flex; 
+    gap: 15px; 
+    overflow-x: auto; 
+    padding-bottom: 20px; 
+    scrollbar-width: none; 
+}
+
+.cards-container::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* Totes les targetes tenen la mateixa mida exacta */
 .card {
-    min-width: 260px; background: var(--card-bg); border-radius: var(--radius); overflow: hidden;
-    box-shadow: var(--shadow); transition: transform 0.2s; cursor: pointer; position: relative;
+    width: 280px; /* Obliga a tenir aquesta amplada */
+    min-width: 280px; 
+    max-width: 280px; /* Impedeix que creixi */
+    flex-shrink: 0; /* Impedeix que s'encongeixi en Flexbox */
+    height: 260px; 
+    background: var(--card-bg); 
+    border-radius: var(--radius); 
+    overflow: hidden;
+    box-shadow: var(--shadow); 
+    transition: transform 0.2s; 
+    cursor: pointer; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
-.card:active { transform: scale(0.98); }
-.card-thumb { width: 100%; height: 150px; object-fit: cover; }
-.card-content { padding: 15px; }
-.card-title { margin: 0; font-size: 16px; font-weight: 600; }
-.card-cat { color: var(--accent); font-size: 13px; margin-top: 4px; font-weight: 500; }
 
-/* Badges (Vist i Cors) */
-.card-badges { position: absolute; top: 10px; left: 10px; z-index: 2; }
+.card:active { 
+    transform: scale(0.98); 
+}
+
+.card-thumb { 
+    width: 100%; 
+    height: 150px; 
+    object-fit: cover; 
+}
+
+.card-content { 
+    padding: 15px; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title { 
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: 600; 
+    line-height: 1.2; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+/* Tags de premis en una línia desplaçable (swipe) */
+.card-categories { 
+    display: flex; 
+    gap: 6px; 
+    margin-top: 10px; 
+    overflow-x: auto; 
+    scrollbar-width: none; 
+}
+
+.card-categories::-webkit-scrollbar {
+    display: none;
+}
+
+.card-cat { 
+    color: var(--accent); 
+    font-size: 11px; 
+    font-weight: 600; 
+    background: rgba(255, 69, 0, 0.1); 
+    padding: 4px 8px; 
+    border-radius: 6px;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    white-space: nowrap; 
+}
+
+/* Etiquetes flotants sobre la imatge (Ull i Cor) */
+.card-badges { 
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    z-index: 2; 
+}
+
 .badge-seen {
-    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); 
-    color: var(--text-main); padding: 4px 8px; border-radius: 12px; font-size: 12px;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(5px); 
+    color: var(--text-main); 
+    padding: 4px 8px; 
+    border-radius: 12px; 
+    font-size: 12px;
 }
-.card-heart { 
-    position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px); color: white; border-radius: 50%; width: 32px; height: 32px; 
-    display: flex; align-items: center; justify-content: center; font-size: 18px; z-index: 2;
-}
-.card-heart.liked { color: var(--accent); }
 
-/* Historial de Mides Fixes */
-.history-section {
-    margin-top: auto; padding: 20px; background: var(--card-bg); 
-    border-top-left-radius: 24px; border-top-right-radius: 24px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+.card-heart { 
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); 
+    color: white; 
+    border-radius: 50%; 
+    width: 32px; 
+    height: 32px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 18px; 
+    z-index: 2;
 }
-.history-section h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--text-sec); font-weight: 600;}
-.history-scroll { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
-.history-scroll::-webkit-scrollbar { display: none; }
+
+.card-heart.liked { 
+    color: var(--accent); 
+}
+
+/* Historial de Mides Fixes (Sempre a baix) */
+.history-section {
+    margin-top: auto; 
+    padding: 20px; 
+    background: var(--card-bg); 
+    border-top-left-radius: 24px; 
+    border-top-right-radius: 24px; 
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+}
+
+.history-section h3 { 
+    margin: 0 0 10px 0; 
+    font-size: 16px; 
+    color: var(--text-sec); 
+    font-weight: 600;
+}
+
+.history-scroll { 
+    display: flex; 
+    gap: 10px; 
+    overflow-x: auto; 
+    scrollbar-width: none; 
+}
+
+.history-scroll::-webkit-scrollbar { 
+    display: none; 
+}
 
 .history-item { 
-    width: 130px; flex-shrink: 0; font-size: 12px; text-align: center; cursor: pointer; color: var(--text-sec); 
+    width: 130px; 
+    flex-shrink: 0; 
+    font-size: 12px; 
+    text-align: center; 
+    cursor: pointer; 
+    color: var(--text-sec); 
 }
+
 .history-item img { 
-    width: 130px; height: 75px; border-radius: 10px; object-fit: cover; margin-bottom: 5px; 
+    width: 130px; 
+    height: 75px; 
+    border-radius: 10px; 
+    object-fit: cover; 
+    margin-bottom: 5px; 
 }
-.history-item span {
-    display: block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+
+.history-item span { 
+    display: block; 
+    width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 /* Reproductor i Controls (Estil YouTube) */
 .nav-btn { 
-    background: none; box-shadow: none; font-size: 16px; color: var(--accent); border: none;
-    margin: 15px 20px; cursor: pointer; padding: 0; font-weight: 500;
+    background: none; 
+    font-size: 16px; 
+    color: var(--accent); 
+    border: none; 
+    margin: 15px 20px; 
+    cursor: pointer; 
+    padding: 0; 
+    font-weight: 500;
 }
 
 .video-container { 
-    width: 100%; background: #000; position: relative; overflow: hidden;
+    width: 100%; 
+    background: #000; 
+    position: relative; 
+    overflow: hidden;
 }
-#main-video { width: 100%; display: block; max-height: 50vh; }
+
+#main-video { 
+    width: 100%; 
+    display: block; 
+    max-height: 50vh; 
+}
 
 .custom-controls {
-    position: absolute; bottom: 0; left: 0; width: 100%;
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
-    padding: 10px 15px 5px 15px; box-sizing: border-box; color: white;
+    padding: 10px 15px 5px 15px; 
+    box-sizing: border-box; 
+    color: white;
 }
-.custom-controls > #progress-slider { margin-bottom: 8px; display: block;}
 
-.controls-row { display: flex; align-items: center; justify-content: space-between; }
-.controls-left { display: flex; align-items: center; gap: 12px; }
-.controls-right { display: flex; align-items: center; }
+.custom-controls > #progress-slider { 
+    margin-bottom: 8px; 
+    display: block;
+}
+
+.controls-row { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.controls-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.controls-right { 
+    display: flex; 
+    align-items: center; 
+}
 
 #time-display { 
-    font-size: 13px; color: #ddd; font-variant-numeric: tabular-nums;
-    white-space: nowrap; text-align: left; margin-left: 5px;
+    font-size: 13px; 
+    color: #ddd; 
+    font-variant-numeric: tabular-nums; 
+    white-space: nowrap; 
+    margin-left: 5px;
 }
 
-.icon-btn { background: none; border: none; color: white; width: 36px; height: 36px; padding: 6px; cursor: pointer; }
-.icon-btn svg { width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
+.icon-btn { 
+    background: none; 
+    border: none; 
+    color: white; 
+    width: 36px; 
+    height: 36px; 
+    padding: 6px; 
+    cursor: pointer; 
+}
 
-/* Sliders estilitzats */
+.icon-btn svg { 
+    width: 100%; 
+    height: 100%; 
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); 
+}
+
 .styled-slider { 
-    -webkit-appearance: none; width: 100%; height: 4px; 
-    background: rgba(255, 255, 255, 0.3); border-radius: 2px; outline: none; cursor: pointer;
+    -webkit-appearance: none; 
+    width: 100%; 
+    height: 4px; 
+    background: rgba(255, 255, 255, 0.3); 
+    border-radius: 2px; 
+    outline: none; 
+    cursor: pointer;
 }
+
 .styled-slider::-webkit-slider-thumb { 
-    -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; 
-    background: var(--accent); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    -webkit-appearance: none; 
+    appearance: none; 
+    width: 14px; 
+    height: 14px; 
+    border-radius: 50%; 
+    background: var(--accent); 
+    cursor: pointer; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.6); 
     transition: transform 0.1s;
 }
-.styled-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
-.vol-control { display: flex; align-items: center; gap: 5px; width: 90px; }
-.vol-slider { width: 100%; flex-grow: 1; height: 4px; }
+.styled-slider::-webkit-slider-thumb:hover { 
+    transform: scale(1.3); 
+}
 
-.video-info { padding: 20px; }
-.info-header { display: flex; justify-content: space-between; align-items: flex-start; }
-#player-title { margin: 0 0 5px 0; font-size: 24px; font-weight: 700;}
-.category-tag { display: inline-block; background: var(--card-bg); padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent); margin-top: 5px;}
-.like-btn { font-size: 32px; background: none; border: none; cursor: pointer; color: #555; padding: 0;}
-.like-btn.liked { color: var(--accent); }
-.hidden { display: none !important; }
+.vol-control { 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+    width: 90px; 
+}
+
+.vol-slider { 
+    width: 100%; 
+    flex-grow: 1; 
+    height: 4px; 
+}
+
+/* Informació a sota del reproductor */
+.video-info { 
+    padding: 20px; 
+}
+
+.info-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; /* Centra verticalment l'ull i el cor */
+    margin-bottom: 8px; /* Dóna espai abans del títol del joc */
+}
+
+#player-title { 
+    margin: 0 0 5px 0; 
+    font-size: 24px; 
+    font-weight: 700;
+}
+
+.like-btn { 
+    font-size: 32px; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    color: #555; 
+    padding: 0;
+}
+
+.like-btn.liked { 
+    color: var(--accent); 
+}
+
+/* Disseny Múltiples Tags Reproductor */
+#player-categories-container { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin-top: 5px; 
+    margin-bottom: 10px; 
+}
+
+.category-tag { 
+    display: inline-block; 
+    background: var(--card-bg); 
+    padding: 5px 12px; 
+    border-radius: 12px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: var(--accent); 
+    border: 1px solid rgba(255, 69, 0, 0.3);
+}

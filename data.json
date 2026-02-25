@@ -1,37 +1,73 @@
 [
   {
+    "any_edicio": 2025,
+    "titol_edicio": "The Game Awards 2025",
+    "guanyadors": [
+      {
+        "id": "clair25",
+        "titol": "Clair Obscur: Expedition 33",
+        "categories": ["Game of the Year", "Best RPG", "Best Game Direction", "Best Art Direction"],
+        "descripcio": "Una èpica i innovadora aventura que va arrasar emportant-se també Millor RPG i Direcció.",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Expedition+33",
+        "video_url": "assets/video/clair.mp4",
+        "durada_segons": 140,
+        "data_llançament": "2025-05-15"
+      },
+      {
+        "id": "silksong25",
+        "titol": "Hollow Knight: Silksong",
+        "categories": ["Best Action/Adventure", "Best Independent Game"],
+        "descripcio": "La tan esperada seqüela protagonitzada per Hornet que ha complert totes les expectatives.",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Silksong",
+        "video_url": "assets/video/silksong.mp4",
+        "durada_segons": 115,
+        "data_llançament": "2025-02-14"
+      }
+    ]
+  },
+  {
     "any_edicio": 2024,
     "titol_edicio": "The Game Awards 2024",
     "guanyadors": [
       {
         "id": "astro24",
         "titol": "Astro Bot",
-        "categoria": "Game of the Year",
-        "descripcio": "Una celebració de la història dels videojocs de plataformes.",
+        "categories": ["Game of the Year", "Best Game Direction", "Best Action/Adventure", "Best Family Game"],
+        "descripcio": "Una celebració de la història dels videojocs de plataformes i la joia de la corona de PlayStation.",
         "miniatura": "assets/miniatura/astro.jpg",
         "video_url": "assets/video/astro.mp4",
         "durada_segons": 120,
         "data_llançament": "2024-09-06"
       },
       {
+        "id": "metaphor24",
+        "titol": "Metaphor: ReFantazio",
+        "categories": ["Best RPG", "Best Narrative", "Best Art Direction"],
+        "descripcio": "Una direcció artística inigualable en un món de fantasia únic creat pels mestres d'Atlus.",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Metaphor",
+        "video_url": "assets/video/metaphor.mp4",
+        "durada_segons": 150,
+        "data_llançament": "2024-10-11"
+      },
+      {
         "id": "ff7_24",
         "titol": "Final Fantasy VII Rebirth",
-        "categoria": "Best RPG",
-        "descripcio": "La continuació del viatge més enllà de Midgar amb una gran direcció.",
+        "categories": ["Best Score and Music"],
+        "descripcio": "La continuació del viatge més enllà de Midgar amb una banda sonora inoblidable.",
         "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=FFVII+Rebirth",
         "video_url": "assets/video/ff7.mp4",
         "durada_segons": 180,
         "data_llançament": "2024-02-29"
       },
       {
-        "id": "metaphor24",
-        "titol": "Metaphor: ReFantazio",
-        "categoria": "Best Art Direction",
-        "descripcio": "Una direcció artística inigualable en un món de fantasia únic.",
-        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Metaphor",
-        "video_url": "assets/video/metaphor.mp4",
-        "durada_segons": 150,
-        "data_llançament": "2024-10-11"
+        "id": "wukong24",
+        "titol": "Black Myth: Wukong",
+        "categories": ["Best Action Game"],
+        "descripcio": "Acció frenètica basada en la mitologia xinesa clàssica.",
+        "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Wukong",
+        "video_url": "assets/video/wukong.mp4",
+        "durada_segons": 130,
+        "data_llançament": "2024-08-20"
       }
     ]
   },
@@ -42,8 +78,8 @@
       {
         "id": "bg3_23",
         "titol": "Baldur's Gate 3",
-        "categoria": "Game of the Year",
-        "descripcio": "L'èpica aventura de rol que ha redefinit el gènere.",
+        "categories": ["Game of the Year", "Best RPG", "Best Multiplayer", "Best Community Support"],
+        "descripcio": "L'èpica aventura de rol que ha redefinit la llibertat i el gènere per complet.",
         "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Baldurs+Gate+3",
         "video_url": "assets/video/bg3.mp4",
         "durada_segons": 140,
@@ -52,8 +88,8 @@
       {
         "id": "aw2_23",
         "titol": "Alan Wake 2",
-        "categoria": "Best Game Direction",
-        "descripcio": "Misteri, terror i una narrativa visual espectacular.",
+        "categories": ["Best Game Direction", "Best Narrative", "Best Art Direction"],
+        "descripcio": "Misteri, terror i una narrativa visual espectacular que trenca la quarta paret.",
         "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Alan+Wake+2",
         "video_url": "assets/video/aw2.mp4",
         "durada_segons": 160,
@@ -62,8 +98,8 @@
       {
         "id": "zelda23",
         "titol": "Zelda: Tears of the Kingdom",
-        "categoria": "Best Action/Adventure",
-        "descripcio": "Exploració sense límits als cels i les profunditats de Hyrule.",
+        "categories": ["Best Action/Adventure"],
+        "descripcio": "Exploració sense límits i físiques increïbles als cels i profunditats de Hyrule.",
         "miniatura": "https://via.placeholder.com/600x340/1c1c1e/ff4500?text=Zelda+TotK",
         "video_url": "assets/video/zelda.mp4",
         "durada_segons": 170,

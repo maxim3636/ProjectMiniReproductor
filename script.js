@@ -29,26 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentSort = document.getElementById('sort-filter').value;
 
-        // 1. Ordenació per anys/edicions
+        // 1. Ordenació per edicions
         let edicionsArray = [...dataToRender];
-        if (currentSort === 'newest') {
-            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
-        } else if (currentSort === 'oldest') {
-            edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
-        } else {
-            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio); // Per defecte
-        }
+        if (currentSort === 'newest') edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        else if (currentSort === 'oldest') edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
+        else edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
 
         // 2. Renderitzat dels anys
         edicionsArray.forEach(edicio => {
             let jocsArray = [...edicio.guanyadors];
 
-            // 3. Ordenació per títol o estat a dins de cada any
-            if (currentSort === 'az') {
-                jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
-            } else if (currentSort === 'za') {
-                jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
-            } else if (currentSort === 'unseen') {
+            // 3. Ordenació per títol o estat
+            if (currentSort === 'az') jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
+            else if (currentSort === 'za') jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
+            else if (currentSort === 'unseen') {
                 jocsArray.sort((a, b) => {
                     const vistA = (parseFloat(localStorage.getItem(`time_${a.id}`)) || 0) > 5 ? 1 : 0;
                     const vistB = (parseFloat(localStorage.getItem(`time_${b.id}`)) || 0) > 5 ? 1 : 0;
@@ -77,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     openPlayer(joc);
                 };
 
+                // Formateig de la llista de categories a petits tags HTML
+                const tagsHTML = joc.categories.map(c => `<span class="card-cat">${c}</span>`).join('');
+
                 card.innerHTML = `
                     <div class="card-badges">
                         ${isSeen ? '<span class="badge-seen">👁 Vist</span>' : ''}
@@ -87,7 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${joc.miniatura}" class="card-thumb" alt="${joc.titol}">
                     <div class="card-content">
                         <h3 class="card-title">${joc.titol}</h3>
-                        <p class="card-cat">${joc.categoria}</p>
+                        <div class="card-categories">
+                            ${tagsHTML}
+                        </div>
                     </div>
                 `;
                 cardsContainer.appendChild(card);
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Filtres
+    // Filtres per a l'Array de Categories
     document.getElementById('category-filter').addEventListener('change', (e) => {
         const filter = e.target.value;
         if(filter === 'all') {
@@ -108,8 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
              });
              renderHome(filteredData);
         } else {
-            const filteredData = allData.map(edicio => {
-                return { ...edicio, guanyadors: edicio.guanyadors.filter(g => g.categoria === filter) };
+             const filteredData = allData.map(edicio => {
+                // Comprovem si l'array de categories del joc conté el filtre seleccionat
+                return { ...edicio, guanyadors: edicio.guanyadors.filter(g => g.categories.includes(filter)) };
              });
              renderHome(filteredData);
         }
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('category-filter').dispatchEvent(new Event('change'));
     });
 
-    // Navegació del Reproductor
+    // Navegació Reproductor
     window.openPlayer = function(joc) {
         homeScreen.classList.remove('active');
         homeScreen.classList.add('hidden');
@@ -129,16 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
         currentVideoId = joc.id;
         document.getElementById('player-title').innerText = joc.titol;
         document.getElementById('player-desc').innerText = joc.descripcio;
-        document.getElementById('player-category').innerText = joc.categoria;
         videoEl.src = joc.video_url;
+
+        // Renderitzem les etiquetes múltiples
+        const playerTagsHTML = joc.categories.map(c => `<span class="category-tag">${c}</span>`).join('');
+        document.getElementById('player-categories-container').innerHTML = playerTagsHTML;
 
         const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
         const seenBadge = document.getElementById('player-seen-badge');
-        if (timePlayed > 5) {
-            seenBadge.classList.remove('hidden');
-        } else {
-            seenBadge.classList.add('hidden');
-        }
+        if (timePlayed > 5) seenBadge.classList.remove('hidden');
+        else seenBadge.classList.add('hidden');
 
         const likeBtn = document.getElementById('player-like-btn');
         const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
@@ -150,8 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addToHistory(joc);
         
         document.getElementById('play-pause-btn').innerHTML = svgPlay;
-        
-        // Reiniciar barra visualment al obrir
         document.getElementById('progress-slider').value = 0;
         document.getElementById('progress-slider').style.background = 'rgba(255, 255, 255, 0.3)';
     };
@@ -166,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderHistory();
     });
 
-    // Controls Reproductor
+    // Controls del Vídeo
     const playBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
     const fullscreenBtn = document.getElementById('fullscreen-btn');
@@ -175,13 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeDisplay = document.getElementById('time-display');
 
     playBtn.addEventListener('click', () => {
-        if(videoEl.paused) {
-            videoEl.play();
-            playBtn.innerHTML = svgPause;
-        } else {
-            videoEl.pause();
-            playBtn.innerHTML = svgPlay;
-        }
+        if(videoEl.paused) { videoEl.play(); playBtn.innerHTML = svgPause; }
+        else { videoEl.pause(); playBtn.innerHTML = svgPlay; }
     });
 
     volumeSlider.addEventListener('input', (e) => {
@@ -191,31 +184,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     muteBtn.addEventListener('click', () => {
         videoEl.muted = !videoEl.muted;
-        if(videoEl.muted) {
-            volumeSlider.value = 0;
-        } else {
-            volumeSlider.value = videoEl.volume || 1;
-        }
+        volumeSlider.value = videoEl.muted ? 0 : (videoEl.volume || 1);
     });
 
-    // iOS iPhone Fullscreen
     fullscreenBtn.addEventListener('click', () => {
-        if (videoEl.requestFullscreen) {
-            videoEl.requestFullscreen();
-        } else if (videoEl.webkitRequestFullscreen) {
-            videoEl.webkitRequestFullscreen();
-        } else if (videoEl.webkitEnterFullscreen) {
-            videoEl.webkitEnterFullscreen();
-        }
+        if (videoEl.requestFullscreen) videoEl.requestFullscreen();
+        else if (videoEl.webkitRequestFullscreen) videoEl.webkitRequestFullscreen();
+        else if (videoEl.webkitEnterFullscreen) videoEl.webkitEnterFullscreen();
     });
 
-    // Barra de temps amb degradat dinàmic
     videoEl.addEventListener('timeupdate', () => {
         if(videoEl.duration) {
             const percentage = (videoEl.currentTime / videoEl.duration) * 100;
             progressSlider.value = percentage;
-            
-            // Fons Taronja a l'esquerra, transparent/fosc a la dreta
             progressSlider.style.background = `linear-gradient(to right, #ff4500 ${percentage}%, rgba(255, 255, 255, 0.3) ${percentage}%)`;
         }
         timeDisplay.innerText = `${formatTime(videoEl.currentTime)} / ${formatTime(videoEl.duration || 0)}`;
@@ -230,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Dades i LocalStorage
     window.toggleLike = function(id, btnElement) {
         const key = `like_${id}`;
         const current = localStorage.getItem(key) === 'true';
