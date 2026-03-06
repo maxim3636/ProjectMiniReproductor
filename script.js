@@ -8,8 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let allData = [];
     let currentVideoId = null;
 
+    // Icones SVGs per reproducció i volum
     const svgPlay = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     const svgPause = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+    const svgVolOn = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>';
+    const svgVolOff = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
 
     fetch('data.json')
         .then(response => response.json())
@@ -31,24 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Ordenació per edicions
         let edicionsArray = [...dataToRender];
-        if (currentSort === 'newest') {
-            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
-        } else if (currentSort === 'oldest') {
-            edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
-        } else {
-            edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
-        }
+        if (currentSort === 'newest') edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
+        else if (currentSort === 'oldest') edicionsArray.sort((a, b) => a.any_edicio - b.any_edicio);
+        else edicionsArray.sort((a, b) => b.any_edicio - a.any_edicio);
 
         // 2. Renderitzat dels anys
         edicionsArray.forEach(edicio => {
             let jocsArray = [...edicio.guanyadors];
 
             // 3. Ordenació per títol o estat (ara mirant si la targeta s'ha obert)
-            if (currentSort === 'az') {
-                jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
-            } else if (currentSort === 'za') {
-                jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
-            } else if (currentSort === 'unseen') {
+            if (currentSort === 'az') jocsArray.sort((a, b) => a.titol.localeCompare(b.titol));
+            else if (currentSort === 'za') jocsArray.sort((a, b) => b.titol.localeCompare(a.titol));
+            else if (currentSort === 'unseen') {
                 jocsArray.sort((a, b) => {
                     const vistA = localStorage.getItem(`opened_${a.id}`) === 'true' ? 1 : 0;
                     const vistB = localStorage.getItem(`opened_${b.id}`) === 'true' ? 1 : 0;
@@ -67,8 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             jocsArray.forEach(joc => {
                 const isLiked = localStorage.getItem(`like_${joc.id}`) === 'true';
-                
-                // Mirem si la targeta ha estat oberta alguna vegada
                 const isSeen = localStorage.getItem(`opened_${joc.id}`) === 'true';
 
                 // Etiqueta dinàmica ✨ NEW o 👁 Vist
@@ -129,6 +124,33 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('category-filter').dispatchEvent(new Event('change'));
     });
 
+    // Funció per a quan cliquem un tag dins del reproductor
+    window.applyCategoryFilter = function(category) {
+        // Pausa el vídeo i canvia a la pantalla principal
+        videoEl.pause();
+        playerScreen.classList.remove('active');
+        playerScreen.classList.add('hidden');
+        homeScreen.classList.remove('hidden');
+        homeScreen.classList.add('active');
+
+        // Canvia el valor del select de categories al valor del tag clicat
+        const filterDropdown = document.getElementById('category-filter');
+        let optionExists = Array.from(filterDropdown.options).some(opt => opt.value === category);
+        
+        if(optionExists) {
+            filterDropdown.value = category;
+        } else {
+            filterDropdown.value = 'all'; // Seguretat
+        }
+
+        // Força l'actualització de la llista cridant l'esdeveniment 'change'
+        filterDropdown.dispatchEvent(new Event('change'));
+        renderHistory();
+        
+        // Torna suaument a la part de dalt de la pàgina
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     // Navegació Reproductor
     window.openPlayer = function(joc) {
         // MARQUEM COM A OBERT DEFINITIVAMENT AL LOCALSTORAGE
@@ -144,8 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('player-desc').innerText = joc.descripcio;
         videoEl.src = joc.video_url;
 
-        // Renderitzem les etiquetes múltiples
-        const playerTagsHTML = joc.categories.map(c => `<span class="category-tag">${c}</span>`).join('');
+        // Renderitzem les etiquetes múltiples AMB CLIC
+        const playerTagsHTML = joc.categories.map(c => 
+            `<span class="category-tag" onclick="applyCategoryFilter('${c}')">${c}</span>`
+        ).join('');
         document.getElementById('player-categories-container').innerHTML = playerTagsHTML;
 
         // Com que acabem d'obrir-lo, al reproductor SEMPRE serà "Vist"
@@ -164,14 +188,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const timePlayed = parseFloat(localStorage.getItem(`time_${joc.id}`)) || 0;
         if(timePlayed) videoEl.currentTime = timePlayed;
         
-        // Forcem que surti la durada del JSON a l'instant
         document.getElementById('time-display').innerText = `${formatTime(timePlayed)} / ${formatTime(joc.durada_segons)}`;
-        
         addToHistory(joc);
         
         document.getElementById('play-pause-btn').innerHTML = svgPlay;
         
-        // El slider depèn de si ja tenia temps guardat o no
         if(joc.durada_segons && timePlayed) {
             const perc = (timePlayed / joc.durada_segons) * 100;
             document.getElementById('progress-slider').value = perc;
@@ -210,14 +231,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Funció que comprova si ha de posar l'icona normal o ratllada
+    function updateVolumeIcon() {
+        if (videoEl.muted || videoEl.volume === 0) {
+            muteBtn.innerHTML = svgVolOff;
+        } else {
+            muteBtn.innerHTML = svgVolOn;
+        }
+    }
+
     volumeSlider.addEventListener('input', (e) => {
         videoEl.volume = e.target.value;
         videoEl.muted = (videoEl.volume === 0);
+        updateVolumeIcon(); // Actualitza gràficament
     });
 
     muteBtn.addEventListener('click', () => {
         videoEl.muted = !videoEl.muted;
         volumeSlider.value = videoEl.muted ? 0 : (videoEl.volume || 1);
+        updateVolumeIcon(); // Actualitza gràficament
     });
 
     fullscreenBtn.addEventListener('click', () => {

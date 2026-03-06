@@ -468,4 +468,11 @@ select {
     font-weight: 600; 
     color: var(--accent); 
     border: 1px solid rgba(255, 69, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.category-tag:hover {
+    transform: scale(1.05); /* Es fan lleugerament més grans a l'acostar-hi el ratolí */
+    background: rgba(255, 69, 0, 0.1);
 }
