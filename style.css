@@ -130,7 +130,7 @@ select {
     border-radius: var(--radius); 
     overflow: hidden;
     box-shadow: var(--shadow); 
-    /* Hem afegit 'box-shadow' a la transició perquè sigui suau */
+    /* box-shadow a la transició perquè sigui suau */
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
     cursor: pointer; 
     position: relative;
@@ -473,6 +473,6 @@ select {
 }
 
 .category-tag:hover {
-    transform: scale(1.05); /* Es fan lleugerament més grans a l'acostar-hi el ratolí */
+    transform: scale(1.05); 
     background: rgba(255, 69, 0, 0.1);
 }

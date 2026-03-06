@@ -6,42 +6,38 @@
       {
         "id": "clair25",
         "titol": "Clair Obscur: Expedition 33",
-        "categories": ["Game of the Year", "Best RPG", "Best Game Direction", "Best Art Direction"],
-        "descripcio": "Una èpica i innovadora aventura que va arrasar emportant-se també Millor RPG i Direcció.",
+        "categories": ["Game of the Year", "Best RPG", "Best Game Direction", "Best Art Direction", "Best Independent Game"],
+        "descripcio": "Una èpica i innovadora aventura que va fer història arrasant amb 9 premis, incloent-hi Millor Joc Independent.",
         "miniatura": "assets/miniatura/clair.jpg",
         "video_url": "assets/video/clair.mp4",
-        "durada_segons": 140,
         "data_llançament": "2025-05-15"
       },
       {
         "id": "silksong25",
         "titol": "Hollow Knight: Silksong",
-        "categories": ["Best Action/Adventure", "Best Independent Game"],
-        "descripcio": "La tan esperada seqüela protagonitzada per Hornet que ha complert totes les expectatives.",
+        "categories": ["Best Action/Adventure"],
+        "descripcio": "La tan esperada seqüela protagonitzada per Hornet que finalment va complir amb totes les expectatives.",
         "miniatura": "assets/miniatura/silksong.jpg",
         "video_url": "assets/video/silksong.mp4",
-        "durada_segons": 115,
         "data_llançament": "2025-02-14"
       },
       {
         "id": "gta6_25",
         "titol": "Grand Theft Auto VI",
-        "categories": ["Best Narrative", "Best Action/Adventure"],
-        "descripcio": "El retorn a Vice City amb la història de la Lucia i el Jason. El llançament més gran de la dècada.",
+        "categories": ["Most Anticipated Game"],
+        "descripcio": "El retorn a Vice City amb la història de la Lucia i el Jason. El llançament més esperat de la dècada, guanyador abans fins i tot de sortir.",
         "miniatura": "assets/miniatura/gta6.jpg",
         "video_url": "assets/video/gta6.mp4",
-        "durada_segons": 150,
-        "data_llançament": "2025-11-20"
+        "data_llançament": "2026-11-20"
       },
       {
-        "id": "mhw25",
-        "titol": "Monster Hunter Wilds",
+        "id": "hades2_25",
+        "titol": "Hades II",
         "categories": ["Best Action Game"],
-        "descripcio": "L'evolució definitiva de la cacera de monstres amb ecosistemes vius i climes extrems.",
-        "miniatura": "assets/miniatura/mhw.jpg",
-        "video_url": "assets/video/mhw.mp4",
-        "durada_segons": 135,
-        "data_llançament": "2025-02-28"
+        "descripcio": "El retorn a l'Inframón de Supergiant Games que va conquerir amb escreix el premi al Millor Joc d'Acció.",
+        "miniatura": "assets/miniatura/hades2.jpg",
+        "video_url": "assets/video/hades2.mp4",
+        "data_llançament": "2025-05-06"
       }
     ]
   },
@@ -56,7 +52,6 @@
         "descripcio": "Una celebració de la història dels videojocs de plataformes i la joia de la corona de PlayStation.",
         "miniatura": "assets/miniatura/astro.jpg",
         "video_url": "assets/video/astro.mp4",
-        "durada_segons": 120,
         "data_llançament": "2024-09-06"
       },
       {
@@ -66,7 +61,6 @@
         "descripcio": "Una direcció artística inigualable en un món de fantasia únic creat pels mestres d'Atlus.",
         "miniatura": "assets/miniatura/metaphor.jpg",
         "video_url": "assets/video/metaphor.mp4",
-        "durada_segons": 150,
         "data_llançament": "2024-10-11"
       },
       {
@@ -76,7 +70,6 @@
         "descripcio": "La continuació del viatge més enllà de Midgar amb una banda sonora inoblidable.",
         "miniatura": "assets/miniatura/ff7.jpg",
         "video_url": "assets/video/ff7.mp4",
-        "durada_segons": 180,
         "data_llançament": "2024-02-29"
       },
       {
@@ -86,7 +79,6 @@
         "descripcio": "Acció frenètica basada en la mitologia xinesa clàssica.",
         "miniatura": "assets/miniatura/wukong.jpg",
         "video_url": "assets/video/wukong.mp4",
-        "durada_segons": 130,
         "data_llançament": "2024-08-20"
       }
     ]
@@ -102,7 +94,6 @@
         "descripcio": "L'èpica aventura de rol que ha redefinit la llibertat i el gènere per complet.",
         "miniatura": "assets/miniatura/bg3.jpg",
         "video_url": "assets/video/bg3.mp4",
-        "durada_segons": 140,
         "data_llançament": "2023-08-03"
       },
       {
@@ -112,7 +103,6 @@
         "descripcio": "Misteri, terror i una narrativa visual espectacular que trenca la quarta paret.",
         "miniatura": "assets/miniatura/aw2.jpg",
         "video_url": "assets/video/aw2.mp4",
-        "durada_segons": 160,
         "data_llançament": "2023-10-27"
       },
       {
@@ -122,7 +112,6 @@
         "descripcio": "Exploració sense límits i físiques increïbles als cels i profunditats de Hyrule.",
         "miniatura": "assets/miniatura/zelda.jpg",
         "video_url": "assets/video/zelda.mp4",
-        "durada_segons": 170,
         "data_llançament": "2023-05-12"
       },
       {
@@ -132,7 +121,6 @@
         "descripcio": "El retorn a les 2D del lampista més famós amb nivells completament sorprenents i psicodèlics.",
         "miniatura": "assets/miniatura/mario.jpg",
         "video_url": "assets/video/mario.mp4",
-        "durada_segons": 110,
         "data_llançament": "2023-10-20"
       }
     ]
